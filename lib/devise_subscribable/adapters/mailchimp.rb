@@ -1,5 +1,3 @@
-require 'adapter'
-
 module Devise
   module Models
     module Subscribable

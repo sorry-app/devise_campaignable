@@ -1,5 +1,6 @@
 # Require the various adapters.
-require 'adapters/mailchimp'
+require 'devise_subscribable/adapters/adapter'
+require 'devise_subscribable/adapters/mailchimp'
 # NOTE: Add other adapters here as and when they're created.
 
 module Devise
