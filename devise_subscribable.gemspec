@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = DeviseSubscribable::VERSION
   spec.authors       = ["Robert Rawlins"]
   spec.email         = ["robert@weboffins.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = "A multi-vendor mailing list extension for Devise. Have your users automatically added to a mailing list."
+  spec.description   = "Inspired by the now slightly out of date devise_mailchimp this gem works in a similar fashion but with a focus on multi-vendor support, rather than exclusively MailChimp."
   spec.homepage      = ""
   spec.license       = "MIT"
 
