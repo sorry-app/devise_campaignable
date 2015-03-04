@@ -19,8 +19,8 @@ module Devise
 
         # Add the callbacks to the user model.
         included do
-            # Callback to subscribe the user whenever the record is saved.
-            after_save :subscribe
+            # Callback to subscribe the user whenever the record is created
+            after_create :subscribe
             # Callback to unsubscribe the user when they are destroyed.
             after_destroy :unsubscribe
         end
