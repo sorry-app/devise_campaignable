@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Devise::Models::Subscribable do
+describe Devise::Models::Campaignable do
 	describe "callbacks" do
 		it "subscribes the user after save"
 		it "unsubscribes the user after destroy"

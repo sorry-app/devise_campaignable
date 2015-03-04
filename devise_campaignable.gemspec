@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'devise_subscribable/version'
+require 'devise_campaignable/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "devise_subscribable"
-  spec.version       = DeviseSubscribable::VERSION
+  spec.name          = "devise_campaignable"
+  spec.version       = DeviseCampaignable::VERSION
   spec.authors       = ["Robert Rawlins"]
   spec.email         = ["robert@weboffins.com"]
   spec.summary       = "A multi-vendor mailing list extension for Devise. Have your users automatically added to a mailing list."

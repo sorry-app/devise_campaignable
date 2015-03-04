@@ -1,19 +1,19 @@
 # Require the various adapters.
-require 'devise_subscribable/adapters/adapter'
-require 'devise_subscribable/adapters/mailchimp'
+require 'devise_campaignable/adapters/adapter'
+require 'devise_campaignable/adapters/mailchimp'
 # NOTE: Add other adapters here as and when they're created.
 
 module Devise
   module Models
     #
-    # Subscribable adds callbacks to your devise model which automaticaly subscribes
+    # Campaignable adds callbacks to your devise model which automaticaly subscribes
     # them to a mailing list when they create their account, and also updates
     # their mailing list profile when they edit their personal details.
     #
     # This is a multi-vendor libarary which will hopefully support a variety of campaign
     # tools from Mailchimp to Campaign Monitor.
     #
-    module Subscribable
+    module Campaignable
         # This modules are injected as concerms.
         extend ActiveSupport::Concern
 
@@ -43,7 +43,7 @@ module Devise
             def list_manager
                 # For this initial mockup let's us the mailchimp adapter.
                 # TODO: Wrap this in a try/catch with a useful error if not adapter is found.
-                manager = Devise::Models::Subscribable::Adapters.const_get(subscribable_vendor.to_s.camelize).new(subscribable_api_key, subscribable_list_id)
+                manager = Devise::Models::Campaignable::Adapters.const_get(campaignable_vendor.to_s.camelize).new(campaignable_api_key, campaignable_list_id)
 
                 # Proxy the manager with delayed job if it's available for us to use.
                 # This will mean tasks are managed in the background where possible.
@@ -51,7 +51,7 @@ module Devise
                 # If class responds to delayed job then return the delayed instance
                 # but if it doesn't look like delayed job implemented just return the
                 # underlying manager object directly.
-                respond_to?(:delay) ? manager.delay(:queue => 'devise_subscribable') : manager
+                respond_to?(:delay) ? manager.delay(:queue => 'devise_campaignable') : manager
             end
 
             # Subscribe all users as a batch.
@@ -73,7 +73,7 @@ module Devise
             end
 
             # Set the configuration variables for the modeule.
-            Devise::Models.config(self, :subscribable_api_key, :subscribable_list_id, :subscribable_vendor)
+            Devise::Models.config(self, :campaignable_api_key, :campaignable_list_id, :campaignable_vendor)
         end
     end
   end

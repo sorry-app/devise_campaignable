@@ -1,14 +1,14 @@
 module Devise
   module Models
-    module Subscribable
+    module Campaignable
       module Adapters
         class Adapter
 
             # Create a new list manager adapter.
-            def initialize(subscribable_api_key, subscribable_list_id)
+            def initialize(campaignable_api_key, campaignable_list_id)
                 # Set the basic properties for an adapter.
-                @subscribable_api_key = subscribable_api_key
-                @subscribable_list_id = subscribable_list_id
+                @campaignable_api_key = campaignable_api_key
+                @campaignable_list_id = campaignable_list_id
             end
 
             # Placeholder methods for the adapter, these should be implemented

@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Devise::Models::Subscribable::Adapters::Mailchimp do
+describe Devise::Models::Campaignable::Adapters::Mailchimp do
 	it "is a subclass of Adapter"
 
 	describe "#api" do

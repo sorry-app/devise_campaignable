@@ -1,4 +1,4 @@
-# DeviseSubscribable
+# DeviseCampaignable
 
 Have your users automatically added to and removed from your favourite mail campaign tool. Currently supports [MailChimp](http://mailchimp.com/).
 
@@ -8,43 +8,43 @@ It is directly extracted from [Sorry&#8482;](http://www.sorryapp.com/) where we 
 
 ## Installation
 
-Simply add DeviseSubscribable to your application's Gemfile:
+Simply add DeviseCampaignable to your application's Gemfile:
 
 	gem 'devise'
-    gem 'devise_subscribable'
+    gem 'devise_campaignable'
 
 ## Devise Configuration
 
-DeviseSubscribable adds a few configuration variables which you'll need to add to your devise initilizer.
+DeviseCampaignable adds a few configuration variables which you'll need to add to your devise initilizer.
 
 ```ruby
 Devise.setup do |config|
-	# ==> Configuration for :subscribable
-	config.subscribable_vendor = :vendor_name
-	config.subscribable_api_key = 'your_service_api_key'
-	config.subscribable_list_id = 'the_id_of_the_list_to_which_we_subscribe'
+	# ==> Configuration for :campaignable
+	config.campaignable_vendor = :vendor_name
+	config.campaignable_api_key = 'your_service_api_key'
+	config.campaignable_list_id = 'the_id_of_the_list_to_which_we_subscribe'
 end
 ```
 
-#### config.subscribable_vendor (optional)
+#### config.campaignable_vendor (optional)
 
 A symbol which represents which mail campaign vendor you wish to use. Defaults to `:mailchimp`. Yet to support any other options but future plans for CampaignMonitor etc.
 
-#### config.subscribable_api_key (required)
+#### config.campaignable_api_key (required)
 
 A API key for your chosen vendor. How you aqcuire this will depend from vendor to vendor. We also recommend for security that you store this in an environment variable instead of directly in the initializer.
 
-#### config.subscribable_list_id (required)
+#### config.campaignable_list_id (required)
 
 The unique ID of the list to which you want your users to be subscribed. Again, how you get this will vary from vendor to vendor.
 
 ## Model Configuration
 
-Add :subscribable to the **devise** call in your model (we’re assuming here you already have a User model with some Devise modules):
+Add :campaignable to the **devise** call in your model (we’re assuming here you already have a User model with some Devise modules):
 
 ```ruby
 class User < ActiveRecord::Base
-	devise :database_authenticatable, :confirmable, :subscribable
+	devise :database_authenticatable, :confirmable, :campaignable
 end
 ```
 
