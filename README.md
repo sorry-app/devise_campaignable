@@ -1,5 +1,7 @@
 # DeviseCampaignable
 
+[![Gem Version](https://badge.fury.io/rb/devise_campaignable.svg)](http://badge.fury.io/rb/devise_campaignable)
+
 Have your users automatically added to and removed from your favourite mail campaign tool. Currently supports [MailChimp](http://mailchimp.com/).
 
 Inspired by the now slightly out of date [devise_mailchimp](https://github.com/jcnnghm/devise_mailchimp), this gem works in a similar fashion but with a focus on multi-vendor support, rather than exclusively MailChimp.
