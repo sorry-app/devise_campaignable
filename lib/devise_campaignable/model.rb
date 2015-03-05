@@ -21,6 +21,8 @@ module Devise
         included do
             # Callback to subscribe the user whenever the record is created
             after_create :subscribe
+            # Callback to see if the subscription for this users needs updating.
+            after_update :update_subscription
             # Callback to unsubscribe the user when they are destroyed.
             after_destroy :unsubscribe
         end
@@ -29,6 +31,13 @@ module Devise
         def subscribe
             # Ask the list manager to subscribe this devise models email.
             self.class.list_manager.subscribe(self.email)
+        end
+
+        # Method to update the subscription
+        def update_subscription
+            # Only change the subscription if the models email
+            # address has been changed.
+            self.class.list_manager.update_subscription(self.email_was, self.email) if self.email_changed?
         end
 
         # Method to unsubscribe the user from the configured mailing list.

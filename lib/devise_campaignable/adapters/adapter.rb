@@ -19,6 +19,15 @@ module Devise
                 # Raise an error to warn it isn't implemented.
                 raise NotImplementedError.new
             end
+            
+            # Placeholder methods for the adapter, these should be implemented
+            # in the parent class but not on the base adapter.
+            #
+            # Update an existing subscription.
+            def update_subscription(old_email, new_email)
+                # Raise an error to warn it isn't implemented.
+                raise NotImplementedError.new
+            end
 
             # Placeholder methods for the adapter, these should be implemented
             # in the parent class but not on the base adapter.

@@ -18,13 +18,24 @@ module Devise
 	            })
             end
 
+            # Update an existing subscription.
+            def update_subscription(old_email, new_email)
+                # Mailchimp have a handy helper for updating an existing subscription.
+                api.update_member({
+                    :id => @campaignable_list_id,
+                    :email => {
+                        :email => old_email
+                    },         
+                    :merge_vars => {
+                        :'new-email' => new_email
+                    }
+                })
+            end
+
 	        # Method to unsubscribe the user from the configured mailing list.
 	        # This method is available for API Keys belonging to users with the following roles: manager, admin, owner
             def unsubscribe(email)
 	            # Logic for mailchimp unsubscription.
-	            # TODO: Move this into some form of adaptor for Mailchimp so this
-	            # TODO: Should this check they are subscribed before attemoting to delete?
-	            #       class becomes more generic.
 	            api.unsubscribe({
 	            	:id => @campaignable_list_id,
 	                :email => {
