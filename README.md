@@ -4,16 +4,17 @@
 
 Have your users automatically added to and removed from your favourite mail campaign tool. Currently supports [MailChimp](http://mailchimp.com/).
 
-Inspired by the now slightly out of date [devise_mailchimp](https://github.com/jcnnghm/devise_mailchimp), this gem works in a similar fashion but with a focus on multi-vendor support, rather than exclusively MailChimp.
+Inspired by the now slightly out of date [devise_mailchimp](https://github.com/jcnnghm/devise_mailchimp) and based upon [Gibbon](https://github.com/amro/gibbon), this gem works in a similar fashion but with a focus on multi-vendor support, rather than exclusively MailChimp.
 
 It is directly extracted from [Sorry&#8482;](http://www.sorryapp.com/) where we use MailChimp to stay in touch with customers about our product development.
 
 ## Installation
 
-Simply add DeviseCampaignable to your application's Gemfile:
+Simply add DeviseCampaignable and Gibbon to your application's Gemfile:
 
 	gem 'devise'
     gem 'devise_campaignable'
+      gem 'gibbon'
 
 ## Devise Configuration
 
@@ -55,6 +56,8 @@ end
 ### Automatic subscribe / unsubscribe
 
 Once configured this gem will ensure any users which are created by Devise will be automaticaly subscribed to your mailing list. They will also be unsubscribed when they are deleted.
+
+By default users are not required to 'double opt in' when added to your list.
 
 ### Manual subscribe / unsubscribe
 
