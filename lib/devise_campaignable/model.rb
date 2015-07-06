@@ -60,7 +60,7 @@ module Devise
                 # If class responds to delayed job then return the delayed instance
                 # but if it doesn't look like delayed job implemented just return the
                 # underlying manager object directly.
-                respond_to?(:delay) ? manager.delay(:queue => 'devise_campaignable') : manager
+                manager.respond_to?(:delay) ? manager.delay(:queue => 'devise_campaignable') : manager
             end
 
             # Subscribe all users as a batch.
