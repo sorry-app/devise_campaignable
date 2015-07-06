@@ -14,7 +14,6 @@ Simply add DeviseCampaignable and Gibbon to your application's Gemfile:
 
 	gem 'devise'
     gem 'devise_campaignable'
-      gem 'gibbon'
 
 ## Devise Configuration
 
