@@ -1,5 +1,6 @@
 # Require the core devise module.
 require 'devise'
+require 'gibbon'
 
 module Devise
 	# Extend the configuration options of the core devise
