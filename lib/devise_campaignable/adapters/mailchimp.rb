@@ -5,7 +5,7 @@ module Devise
         class Mailchimp < Adapter
 
             # Subscribe an email to the instantiated list.
-            def subscribe(email)
+            def subscribe(email, merge_vars={})
 	            # Logic for mailchimp subcription.
 	            api.subscribe({
 	            	:id => @campaignable_list_id,
@@ -14,21 +14,23 @@ module Devise
 	                }, 
 	                :double_optin => false, # Don't require email authorization.
 	                :update_existing => true, # Don't error if adding existing subscriber.
-	                :send_welcome => false # Don't send a welcome email when they're added to the list.
+	                :send_welcome => false, # Don't send a welcome email when they're added to the list.
+                    :merge_vars => merge_vars # Include additional variables to be stored.
 	            })
             end
 
             # Update an existing subscription.
-            def update_subscription(old_email, new_email)
+            def update_subscription(old_email, new_email, merge_vars={})
+                # Append the new email address into the merge vars.
+                merge_vars[:new_email] = new_email
+
                 # Mailchimp have a handy helper for updating an existing subscription.
                 api.update_member({
                     :id => @campaignable_list_id,
                     :email => {
                         :email => old_email
                     },         
-                    :merge_vars => {
-                        :'new-email' => new_email
-                    }
+                    :merge_vars => merge_vars # Include additional variables to be stored, including new email
                 })
             end
 

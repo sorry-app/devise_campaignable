@@ -30,14 +30,14 @@ module Devise
         # Method to subscibe the user to the configrued mailing list.
         def subscribe
             # Ask the list manager to subscribe this devise models email.
-            self.class.list_manager.subscribe(self.email)
+            self.class.list_manager.subscribe(self.email, campaignable_additional_fields)
         end
 
         # Method to update the subscription
         def update_subscription
             # Only change the subscription if the models email
             # address has been changed.
-            self.class.list_manager.update_subscription(self.email_was, self.email) if self.email_changed?
+            self.class.list_manager.update_subscription(self.email_was, self.email, campaignable_additional_fields) if self.email_changed?
         end
 
         # Method to unsubscribe the user from the configured mailing list.
@@ -45,6 +45,23 @@ module Devise
             # Ask the list manager to unsubscribe this devise models email.
             self.class.list_manager.unsubscribe(self.email)
         end
+
+        private
+
+            # Get a hash of the additional fields.
+            def campaignable_additional_fields
+                # Create an empty hash to store the fields.
+                additional_fields = {}
+
+                # Loop over the additional fields configured.
+                self.class.campaignable_additional_fields.each do |field_name|
+                    # Create a new additional field using the key/value.
+                    additional_fields[field_name] = self.send(field_name)
+                end
+
+                # Compact to the hash to remove any empty data.
+                additional_fields.compact
+            end
 
         module ClassMethods
 
@@ -82,7 +99,7 @@ module Devise
             end
 
             # Set the configuration variables for the modeule.
-            Devise::Models.config(self, :campaignable_api_key, :campaignable_list_id, :campaignable_vendor)
+            Devise::Models.config(self, :campaignable_api_key, :campaignable_list_id, :campaignable_vendor, :campaignable_additional_fields)
         end
     end
   end

@@ -34,11 +34,20 @@ module Devise
 	# account tab in your MailChimp account and select API Keys & Authorized Apps, then add
 	# a key.  This defaults to 'your_api_key'
 	#
-	# Set subsribable_api_key in the Devise configuration file (config/initializers/devise.rb)
+	# Set campaignable_api_key in the Devise configuration file (config/initializers/devise.rb)
 	#
-	#   Devise.subsribable_api_key = "your_api_key"
+	#   Devise.campaignable_api_key = "your_api_key"
 	mattr_accessor :campaignable_api_key
 	@@campaignable_api_key = 'your_api_key'
+
+	# Public: The names of additional columns on your user model you want passed along to
+	# the campaign service provider, this may be things like names, address, plan etc.
+	#
+	# Set campaignable_additional_fields in the Devise configuration file (config/initializers/devise.rb)
+	#
+	#   Devise.campaignable_additional_fields = [:first_name, :last_name, :favourite_colour]
+	mattr_accessor :campaignable_additional_fields
+	@@campaignable_additional_fields = []
 end
 
 Devise.add_module :campaignable, :model => 'devise_campaignable/model'
