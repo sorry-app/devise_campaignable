@@ -25,6 +25,7 @@ Devise.setup do |config|
 	config.campaignable_vendor = :vendor_name
 	config.campaignable_api_key = 'your_service_api_key'
 	config.campaignable_list_id = 'the_id_of_the_list_to_which_we_subscribe'
+	config.campaignable_additional_fields = [:array, :of, :additional, :fields]
 end
 ```
 
@@ -39,6 +40,10 @@ A API key for your chosen vendor. How you aqcuire this will depend from vendor t
 #### config.campaignable_list_id (required)
 
 The unique ID of the list to which you want your users to be subscribed. Again, how you get this will vary from vendor to vendor.
+
+#### config.campaignable_additional_fields (optional)
+
+An array of symbols which denote attributes on the model you want sent to the campaign vendor. Can be things like Name, Age, Address. Defaults to no additional fields.
 
 ## Model Configuration
 
