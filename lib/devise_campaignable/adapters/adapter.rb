@@ -15,7 +15,7 @@ module Devise
             # in the parent class but not on the base adapter.
             #
             # Accepts single email address to subscribe.
-            def subscribe(email)
+            def subscribe(email, merge_vars={})
                 # Raise an error to warn it isn't implemented.
                 raise NotImplementedError.new
             end
@@ -24,7 +24,7 @@ module Devise
             # in the parent class but not on the base adapter.
             #
             # Update an existing subscription.
-            def update_subscription(old_email, new_email)
+            def update_subscription(old_email, new_email, merge_vars={})
                 # Raise an error to warn it isn't implemented.
                 raise NotImplementedError.new
             end
