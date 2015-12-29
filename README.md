@@ -22,7 +22,7 @@ DeviseCampaignable adds a few configuration variables which you'll need to add t
 ```ruby
 Devise.setup do |config|
 	# ==> Configuration for :campaignable
-	config.campaignable_vendor = :vendor_name
+	config.campaignable_vendor = :mailchimp
 	config.campaignable_api_key = 'your_service_api_key'
 	config.campaignable_list_id = 'the_id_of_the_list_to_which_we_subscribe'
 	config.campaignable_additional_fields = [:array, :of, :additional, :fields]
