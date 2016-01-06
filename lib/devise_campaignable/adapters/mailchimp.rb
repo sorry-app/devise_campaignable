@@ -7,30 +7,20 @@ module Devise
             # Subscribe an email to the instantiated list.
             def subscribe(email, merge_vars={})
 	            # Logic for mailchimp subcription.
-	            api.subscribe({
-	            	:id => @campaignable_list_id,
-	                :email => {
-	                    :email => email
-	                }, 
-	                :double_optin => false, # Don't require email authorization.
-	                :update_existing => true, # Don't error if adding existing subscriber.
-	                :send_welcome => false, # Don't send a welcome email when they're added to the list.
-                    :merge_vars => merge_vars # Include additional variables to be stored.
+	            api.lists(@campaignable_list_id).members(subscriber_hash(email)).upsert(body: {
+	                :email_address => email,
+                    :status => "subscribed",
+                    :merge_fields => merge_vars # Include additional variables to be stored.
 	            })
             end
 
             # Update an existing subscription.
             def update_subscription(old_email, new_email, merge_vars={})
-                # Append the new email address into the merge vars.
-                merge_vars[:new_email] = new_email
-
-                # Mailchimp have a handy helper for updating an existing subscription.
-                api.update_member({
-                    :id => @campaignable_list_id,
-                    :email => {
-                        :email => old_email
-                    },         
-                    :merge_vars => merge_vars # Include additional variables to be stored, including new email
+                # Update the existing member details.
+                api.lists(@campaignable_list_id).members(subscriber_hash(old_email)).update(body: {
+                    :email_address => new_email,
+                    :status => "subscribed",
+                    :merge_fields => merge_vars # Include additional variables to be stored.
                 })
             end
 
@@ -38,46 +28,66 @@ module Devise
 	        # This method is available for API Keys belonging to users with the following roles: manager, admin, owner
             def unsubscribe(email)
 	            # Logic for mailchimp unsubscription.
-	            api.unsubscribe({
-	            	:id => @campaignable_list_id,
-	                :email => {
-	                    :email => email
-	                }, 
-	                :send_goodbye => false, # Don't send a goodbye email.
-	                :send_notify => false # Don't notify the user of the unsubscription.
-	            })
-            end            
+	            api.lists(@campaignable_list_id).members(subscriber_hash(email)).update(body: { status: "unsubscribed" })
+            end
 
             # Subscribe all users as a batch.
             def batch_subscribe(emails=[])
-                # Do this using a batch call to the MailChimp API for performance rather than lots of single API calls.
-                api.batch_subscribe({
-                	:id => @campaignable_list_id,
-                    :batch => emails.map {|email| {:email => { :email => email }} }, # Map all users in the system into a mailchimp collcation.
-                    :double_optin => false, # Don't require email authorization.
-                    :update_existing => true, # Don't error if adding existing subscriber.
-                    :replace_interests => false # Don't send a welcome email when they're added to the list.                
-                })
+                # Prepate the batch of subscribe operations to be called.
+                operations = []
+
+                # Create a upsert operations for each of the email addresses.
+                emails.each do |email|
+                    # The operation is manually compiled as the Gibbon
+                    # gem doesn't give us an easy way of doing this.
+                    operations.append({
+                        :method => "POST",
+                        :path => "/lists/#{@campaignable_list_id}/members",
+                        :body => {
+                            :email_address => email,
+                            :status => "subscribed"
+                        }.to_json
+                    })
+                end
+
+                # Make the request to process the batch of operations
+                api.batches.create(body: {:operations => operations})
             end
 
             # Unsubscribe all users as a batch.
             def batch_unsubscribe(emails=[])
-                # Do this using a batch call to the MailChimp API for performance rather than lots of single API calls.
-                api.batch_unsubscribe({
-                	:id => @campaignable_list_id,
-                    :batch => emails.map {|email| {:email => { :email => email }} }, # Map all users in the system into a mailchimp collcation.
-                    :send_goodbye => false, # Don't send a goodbye email.
-                    :send_notify => false # Don't notify the user of the unsubscription.             
-                })
+                # Prepate the batch of subscribe operations to be called.
+                operations = []
+
+                # Create a upsert operations for each of the email addresses.
+                emails.each do |email|
+                    # The operation is manually compiled as the Gibbon
+                    # gem doesn't give us an easy way of doing this.
+                    operations.append({
+                        :method => "PATCH",
+                        :path => "/lists/#{@campaignable_list_id}/members/#{subscriber_hash(email)}",
+                        :body => { :status => "unsubscribed" }.to_json
+                    })
+                end
+
+                # Make the request to process the batch of operations
+                api.batches.create(body: {:operations => operations})
             end
 
             private
+
+                # Convert the members email into a hash
+                # to be sent to mailchimp as part of the update calls.
+                def subscriber_hash(email)
+                    # Simple hash of the email address.
+                    Digest::MD5.hexdigest(email)
+                end
 
                 # Get an instance of the MailChimp API.
                 def api
                     # Instantiate an instance of Gibbon with the API key provided to this adapter.
                     # We only work with the lists api here, so namespace into that.
-                    Gibbon::API.new(@campaignable_api_key).lists                   
+                    Gibbon::Request.new(api_key: @campaignable_api_key)
                 end
 
         end
