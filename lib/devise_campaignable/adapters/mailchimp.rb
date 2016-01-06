@@ -41,8 +41,8 @@ module Devise
                     # The operation is manually compiled as the Gibbon
                     # gem doesn't give us an easy way of doing this.
                     operations.append({
-                        :method => "PUT",
-                        :path => "/lists/#{@campaignable_list_id}/members/#{subscriber_hash(email)}",
+                        :method => "POST",
+                        :path => "/lists/#{@campaignable_list_id}/members",
                         :body => {
                             :email_address => email,
                             :status => "subscribed"
@@ -64,12 +64,9 @@ module Devise
                     # The operation is manually compiled as the Gibbon
                     # gem doesn't give us an easy way of doing this.
                     operations.append({
-                        :method => "PUT",
+                        :method => "PATCH",
                         :path => "/lists/#{@campaignable_list_id}/members/#{subscriber_hash(email)}",
-                        :body => {
-                            :email_address => email,
-                            :status => "unsubscribed"
-                        }.to_json
+                        :body => { :status => "unsubscribed" }.to_json
                     })
                 end
 
