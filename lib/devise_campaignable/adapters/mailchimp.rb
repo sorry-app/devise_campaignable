@@ -6,6 +6,10 @@ module Devise
 
             # Subscribe an email to the instantiated list.
             def subscribe(email, merge_vars={})
+              if /\@example\.com/ =~ email
+                Rails.logger.warn "Not subscribing example email: #{email}"
+                return
+              end
 	            # Logic for mailchimp subcription.
 	            api.lists(@campaignable_list_id).members(subscriber_hash(email)).upsert(body: {
 	                :email_address => email,
@@ -29,6 +33,9 @@ module Devise
             def unsubscribe(email)
 	            # Logic for mailchimp unsubscription.
 	            api.lists(@campaignable_list_id).members(subscriber_hash(email)).update(body: { status: "unsubscribed" })
+            rescue Gibbon::MailChimpError => e
+              raise unless e.status_code == 404
+              Rails.logger.warn "unsubscribe: User #{self.email} not found!"
             end
 
             # Subscribe all users as a batch.
