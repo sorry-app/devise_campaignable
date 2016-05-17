@@ -1,6 +1,6 @@
 # DeviseCampaignable
 
-[![Gem Version](https://badge.fury.io/rb/devise_campaignable.svg)](http://badge.fury.io/rb/devise_campaignable)
+[![Build Status](https://travis-ci.org/sorry-app/devise_campaignable.svg?branch=master)](https://travis-ci.org/sorry-app/devise_campaignable) [![Gem Version](https://badge.fury.io/rb/devise_campaignable.svg)](http://badge.fury.io/rb/devise_campaignable)
 
 Have your users automatically added to and removed from your favourite mail campaign tool. Currently supports [MailChimp](http://mailchimp.com/).
 
