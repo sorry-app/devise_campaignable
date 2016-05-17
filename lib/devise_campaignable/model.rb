@@ -20,11 +20,11 @@ module Devise
         # Add the callbacks to the user model.
         included do
             # Callback to subscribe the user whenever the record is created
-            after_create :subscribe
+            after_create :subscribe, if: :campaignable_user?
             # Callback to see if the subscription for this users needs updating.
-            after_update :update_subscription
+            after_update :update_subscription, if: :campaignable_user?
             # Callback to unsubscribe the user when they are destroyed.
-            after_destroy :unsubscribe
+            after_destroy :unsubscribe, if: :campaignable_user?
         end
 
         # Method to subscibe the user to the configrued mailing list.
@@ -61,6 +61,10 @@ module Devise
 
                 # Compact to the hash to remove any empty data.
                 additional_fields.compact
+            end
+            
+            def campaignable_user?
+                self.email.present? && /\@example\.(com|net|org|edu)$/ !~ self.email
             end
 
         module ClassMethods

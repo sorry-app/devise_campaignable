@@ -6,10 +6,6 @@ module Devise
 
             # Subscribe an email to the instantiated list.
             def subscribe(email, merge_vars={})
-              if /\@example\.com/ =~ email
-                Rails.logger.warn "Not subscribing example email: #{email}"
-                return
-              end
 	            # Logic for mailchimp subcription.
 	            api.lists(@campaignable_list_id).members(subscriber_hash(email)).upsert(body: {
 	                :email_address => email,
