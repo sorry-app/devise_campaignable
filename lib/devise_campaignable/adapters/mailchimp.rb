@@ -29,6 +29,9 @@ module Devise
             def unsubscribe(email)
 	            # Logic for mailchimp unsubscription.
 	            api.lists(@campaignable_list_id).members(subscriber_hash(email)).update(body: { status: "unsubscribed" })
+            rescue Gibbon::MailChimpError => e
+              raise unless e.status_code == 404
+              Rails.logger.warn "unsubscribe: User #{self.email} not found!"
             end
 
             # Subscribe all users as a batch.

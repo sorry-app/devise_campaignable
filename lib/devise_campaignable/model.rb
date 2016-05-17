@@ -20,11 +20,11 @@ module Devise
         # Add the callbacks to the user model.
         included do
             # Callback to subscribe the user whenever the record is created
-            after_create :subscribe
+            after_create :subscribe, if: :campaignable_user?
             # Callback to see if the subscription for this users needs updating.
-            after_update :update_subscription
+            after_update :update_subscription, if: :campaignable_user?
             # Callback to unsubscribe the user when they are destroyed.
-            after_destroy :unsubscribe
+            after_destroy :unsubscribe, if: :campaignable_user?
         end
 
         # Method to subscibe the user to the configrued mailing list.
@@ -45,6 +45,11 @@ module Devise
             # Ask the list manager to unsubscribe this devise models email.
             self.class.list_manager.unsubscribe(self.email)
         end
+        
+        # Returns true if it's a valid email for subscribing
+        def self.valid_campaign_email?(email)
+            email.present? && /\@example\.(com|net|org|edu)$/ !~ email
+        end
 
         private
 
@@ -61,6 +66,10 @@ module Devise
 
                 # Compact to the hash to remove any empty data.
                 additional_fields.compact
+            end
+            
+            def campaignable_user?
+                Campaignable.valid_campaign_email? self.email
             end
 
         module ClassMethods
@@ -83,7 +92,7 @@ module Devise
             # Subscribe all users as a batch.
             def subscribe_all
                 # Get an array of all the email addresses accociated with this devise class.
-                emails = all.map(&:email)
+                emails = all.map(&:email).select {|e| Devise::Models::Campaignable.valid_campaign_email? e}
 
                 # Ask the list managed to subscibe all of these emails.
                 list_manager.batch_subscribe(emails)
@@ -92,12 +101,12 @@ module Devise
             # Unsubscribe all users as a batch.
             def unsubscribe_all
                 # Get an array of all the email addresses accociated with this devise class.
-                emails = all.map(&:email)
+                emails = all.map(&:email).select {|e| Devise::Models::Campaignable.valid_campaign_email? e}
 
                 # Ask the list managed to subscibe all of these emails.
                 list_manager.batch_unsubscribe(emails)                
             end
-
+            
             # Set the configuration variables for the modeule.
             Devise::Models.config(self, :campaignable_api_key, :campaignable_list_id, :campaignable_vendor, :campaignable_additional_fields)
         end
