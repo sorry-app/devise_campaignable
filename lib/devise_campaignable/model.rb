@@ -48,6 +48,7 @@ module Devise
         
         # Returns true if it's a valid email for subscribing
         def self.valid_campaign_email?(email)
+            # Check that the email is present, and that it's not an example domain.
             email.present? && /\@example\.(com|net|org|edu)$/ !~ email
         end
 
@@ -69,6 +70,7 @@ module Devise
             end
             
             def campaignable_user?
+                # Check the email is valid, so callbacks not fired for example domains.
                 Campaignable.valid_campaign_email? self.email
             end
 

@@ -10,7 +10,7 @@ module Devise
 	            api.lists(@campaignable_list_id).members(subscriber_hash(email)).upsert(body: {
 	                :email_address => email,
                     :status => "subscribed",
-                    :merge_fields => merge_vars # Include additional variables to be stored.
+                    :merge_fields => prep_merge_fields(merge_vars) # Include additional variables to be stored.
 	            })
             end
 
@@ -20,7 +20,7 @@ module Devise
                 api.lists(@campaignable_list_id).members(subscriber_hash(old_email)).update(body: {
                     :email_address => new_email,
                     :status => "subscribed",
-                    :merge_fields => merge_vars # Include additional variables to be stored.
+                    :merge_fields => prep_merge_fields(merge_vars) # Include additional variables to be stored.
                 })
             end
 
@@ -30,8 +30,10 @@ module Devise
 	            # Logic for mailchimp unsubscription.
 	            api.lists(@campaignable_list_id).members(subscriber_hash(email)).update(body: { status: "unsubscribed" })
             rescue Gibbon::MailChimpError => e
-              raise unless e.status_code == 404
-              Rails.logger.warn "unsubscribe: User #{email} not found!"
+                # Reraise any non 404 errors.
+                raise unless e.status_code == 404
+                # Log rails errors into the rails logger.
+                Rails.logger.warn "unsubscribe: User #{email} not found!"
             end
 
             # Subscribe all users as a batch.
@@ -78,6 +80,12 @@ module Devise
             end
 
             private
+
+                # Prepare the merge fields to be sent to MailChimp.
+                def prep_merge_fields(merge_fields)
+                    # Upper-case all the keys as this is how MC expect them.
+                    merge_fields.map { |k, v| [k.upcase, v] }.to_h
+                end
 
                 # Convert the members email into a hash
                 # to be sent to mailchimp as part of the update calls.

@@ -43,7 +43,9 @@ The unique ID of the list to which you want your users to be subscribed. Again, 
 
 #### config.campaignable_additional_fields (optional)
 
-An array of symbols which denote attributes on the model you want sent to the campaign vendor. Can be things like Name, Age, Address. Defaults to no additional fields.
+An array of symbols which denote attributes on the model you want sent to the campaign vendor. Can be things like Name, Age, Address. Defaults to no additional fields. 
+
+**MailChimp Users: You need to have added merge fields with matching names to your MailChimp list before this will work, the merge fields should match the attribute on your user model, capitalized. i.e. an attribute such as 'name' should have a merge field on the list of 'NAME'.**
 
 ## Model Configuration
 
