@@ -11,7 +11,10 @@ module Devise
 	                :email_address => email,
                     :status => "subscribed",
                     :merge_fields => prep_merge_fields(merge_vars) # Include additional variables to be stored.
-	            })
+                })
+            rescue Gibbon::MailChimpError => e
+                # Log mailchimp api errors into the rails logger.
+                Rails.logger.warn "subscribe: MailChimp error: #{e}"
             end
 
             # Update an existing subscription.
