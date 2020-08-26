@@ -22,7 +22,6 @@ module Devise
                 # Update the existing member details.
                 api.lists(@campaignable_list_id).members(subscriber_hash(old_email)).update(body: {
                     :email_address => new_email,
-                    :status => "subscribed",
                     :merge_fields => prep_merge_fields(merge_vars) # Include additional variables to be stored.
                 })
             end
