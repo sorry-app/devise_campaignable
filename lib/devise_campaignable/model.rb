@@ -37,7 +37,7 @@ module Devise
         def update_subscription
             # Only change the subscription if the models email
             # address has been changed.
-            self.class.list_manager.update_subscription(self.email_was, self.email, campaignable_additional_fields) if self.email_changed?
+            self.class.list_manager.update_subscription(self.email_was, self.email, campaignable_additional_fields) if email_changed? || campaignable_additional_fields.any? {|f| attribute_changed? f}
         end
 
         # Method to unsubscribe the user from the configured mailing list.
