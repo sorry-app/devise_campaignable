@@ -87,7 +87,7 @@ module Devise
                 # Prepare the merge fields to be sent to MailChimp.
                 def prep_merge_fields(merge_fields)
                     # Upper-case all the keys as this is how MC expect them.
-                    merge_fields.map { |k, v| [k.upcase, v] }.to_h
+                    merge_fields.map { |k, v| [k.to_s.upcase.first(10), v] }.to_h
                 end
 
                 # Convert the members email into a hash

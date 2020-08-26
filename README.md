@@ -45,7 +45,7 @@ The unique ID of the list to which you want your users to be subscribed. Again, 
 
 An array of symbols which denote attributes on the model you want sent to the campaign vendor. Can be things like Name, Age, Address. Defaults to no additional fields. 
 
-**MailChimp Users: You need to have added merge fields with matching names to your MailChimp list before this will work, the merge fields should match the attribute on your user model, capitalized. i.e. an attribute such as 'name' should have a merge field on the list of 'NAME'.**
+**MailChimp Users: You need to have added merge fields with matching names to your MailChimp list before this will work, the merge fields should match the attribute on your user model, capitalized. i.e. an attribute such as 'name' should have a merge field on the list of 'NAME'. If your attribute is more than 10 characters (MailChimp's limit) then use the first 10 characters.**
 
 ## Model Configuration
 
