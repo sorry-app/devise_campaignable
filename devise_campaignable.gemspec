@@ -25,5 +25,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "activemodel"
   
   spec.add_runtime_dependency "devise", ">= 3.2.0"
-  spec.add_runtime_dependency "gibbon", "~> 3.3.4"
+  spec.add_runtime_dependency "gibbon", "~> 3.4.3"
 end
